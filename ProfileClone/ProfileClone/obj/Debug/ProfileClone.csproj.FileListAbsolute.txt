@@ -1,0 +1,9 @@
+c:\users\1jbeaulieu\documents\visual studio 2013\Projects\ProfileClone\ProfileClone\bin\Debug\ProfileClone.exe.config
+c:\Users\1jbeaulieu\Documents\Visual Studio 2013\Projects\ProfileClone\ProfileClone\bin\Debug\ProfileClone.exe
+c:\Users\1jbeaulieu\Documents\Visual Studio 2013\Projects\ProfileClone\ProfileClone\bin\Debug\ProfileClone.pdb
+c:\Users\1jbeaulieu\Documents\Visual Studio 2013\Projects\ProfileClone\ProfileClone\obj\Debug\ProfileClone.csprojResolveAssemblyReference.cache
+c:\Users\1jbeaulieu\Documents\Visual Studio 2013\Projects\ProfileClone\ProfileClone\obj\Debug\ProfileClone.mainForm.resources
+c:\Users\1jbeaulieu\Documents\Visual Studio 2013\Projects\ProfileClone\ProfileClone\obj\Debug\ProfileClone.Properties.Resources.resources
+c:\Users\1jbeaulieu\Documents\Visual Studio 2013\Projects\ProfileClone\ProfileClone\obj\Debug\ProfileClone.csproj.GenerateResource.Cache
+c:\Users\1jbeaulieu\Documents\Visual Studio 2013\Projects\ProfileClone\ProfileClone\obj\Debug\ProfileClone.exe
+c:\Users\1jbeaulieu\Documents\Visual Studio 2013\Projects\ProfileClone\ProfileClone\obj\Debug\ProfileClone.pdb
