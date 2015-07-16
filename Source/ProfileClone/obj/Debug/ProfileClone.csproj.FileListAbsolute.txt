@@ -7,3 +7,9 @@ c:\Users\1jbeaulieu\Documents\Visual Studio 2013\Projects\ProfileClone\ProfileCl
 c:\Users\1jbeaulieu\Documents\Visual Studio 2013\Projects\ProfileClone\ProfileClone\obj\Debug\ProfileClone.csproj.GenerateResource.Cache
 c:\Users\1jbeaulieu\Documents\Visual Studio 2013\Projects\ProfileClone\ProfileClone\obj\Debug\ProfileClone.exe
 c:\Users\1jbeaulieu\Documents\Visual Studio 2013\Projects\ProfileClone\ProfileClone\obj\Debug\ProfileClone.pdb
+C:\Users\1jbeaulieu\Documents\GitHub\ProfileCloner\ProfileClone\ProfileClone\bin\Debug\ProfileClone.exe.config
+C:\Users\1jbeaulieu\Documents\GitHub\ProfileCloner\ProfileClone\ProfileClone\obj\Debug\ProfileClone.exe
+C:\Users\1jbeaulieu\Documents\GitHub\ProfileCloner\ProfileClone\ProfileClone\obj\Debug\ProfileClone.pdb
+C:\Users\1jbeaulieu\Documents\GitHub\ProfileCloner\Source\ProfileClone\bin\Debug\ProfileClone.exe.config
+C:\Users\1jbeaulieu\Documents\GitHub\ProfileCloner\Source\ProfileClone\obj\Debug\ProfileClone.exe
+C:\Users\1jbeaulieu\Documents\GitHub\ProfileCloner\Source\ProfileClone\obj\Debug\ProfileClone.pdb

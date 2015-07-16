@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*****************************
+ * ProfileClone Tool
+ * Authored by Jon Beaulieu
+ * Version 0.0.1.1
+ * Most Recent Edit: 7/16/2015
+ ****************************/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,13 +20,25 @@ namespace ProfileClone
 {
     public partial class mainForm : Form
     {
+        // sourceList will contain the list of directories that we wish to back up
         List<string> sourceList = new List<string>();
 
+        // Build the list of available system drives
         System.IO.DriveInfo[] driveArray = System.IO.DriveInfo.GetDrives();
 
         public mainForm()
         {
             InitializeComponent();
+
+            /* On starting the application, populate the two comboBoxes (where the user
+             * selects an import & export drive) with all available drives from the drive list.
+             * The first comboBox will default to the first available drive (usually C:\),
+             * while the second comboBox will default to the next available drive. */
+
+            /* DEVELOPMENT NOTE: The naming of the two drive selections (import vs export drive)
+             * may be confusing for anyone outside who is examining the source. Possible rename
+             * might be something along the lines of "readDrive" and "writeDrive".
+             * SEVERITY: LOW */
 
             for (int i = 0; i < driveArray.Length; i++)
             {
@@ -44,31 +63,57 @@ namespace ProfileClone
             drive2Refresh();
         }
 
+        /// <summary> showHiddenCheckBox_CheckedChanged()
+        /// This code runs if the "show hidden users" option is changed.
+        /// In this case, we simply refresh both drives. The driveRefresh()
+        /// function handles hiding/displaying any hidden profiles.
+        /// </summary>
         private void showHiddenCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             drive1Refresh();
             drive2Refresh();
         }
 
+        /* DEVELOPMENT NOTE: The two below driveRefresh() functions are practically identical,
+         * and should be condensed into a single function. Ideal driveRefresh() should take in an
+         * argument for which drive to be refresh, and perform the appropriate actions. As there
+         * are only two drives to refresh (import and export), using switch cases or if statements
+         * for areas where they differ would be acceptable.
+         * SEVERITY: MEDIUM */
+
+        /// <summary> drive1Refresh()
+        /// Refreshes the list of user profiles available for selection on drive 1.
+        /// This function should be called anytime drive 1 is changed, or the option
+        /// to view hidden profiles is enabled/disabled.
+        /// </summary>
         public void drive1Refresh()
         {
+            // Clear the current list of items
             userList1.Items.Clear();
 
+            // Check if the disk is ready before attempting to read from it
             if (driveArray[driveBox1.SelectedIndex].IsReady)
             {
                 try
                 {
+                    // The parent path is X:\Users\ (where X is the selected drive letter
                     string path = driveBox1.SelectedItem.ToString() + "Users\\";
 
-                    if (showHiddenCheckBox.Checked)
+                    /* DEVELOPMENT NOTE: the foreach statement in this method occurs regardless of the result of the
+                     * if statement. Consider restructuring this by moving the showHiddenCheckBox evaluation inside of
+                     * the foreach loop. This should reduce code length, but may hinder efficiency.
+                     * SEVERITY: MEDIUM */
+
+                    if (showHiddenCheckBox.Checked)     // If the user has elected to view hidden profiles
                     {
                         foreach (string userDirectory in System.IO.Directory.GetDirectories(path))
                         {
+                            // Iterate through all subdirectories of the parent path, add them to the profile list
                             string user = userDirectory.Substring(9);
                             userList1.Items.Add(user);
                         }
                     }
-                    else
+                    else    // If hidden profiles should not be shown (default)
                     {
                         foreach (string userFolder in System.IO.Directory.GetDirectories(path))
                         {
@@ -93,6 +138,11 @@ namespace ProfileClone
             }
         }
 
+        /// <summary> drive1Refresh()
+        /// Refreshes the list of user profiles available for selection on drive 1.
+        /// This function should be called anytime drive 1 is changed, or the option
+        /// to view hidden profiles is enabled/disabled.
+        /// </summary>
         public void drive2Refresh()
         {
             userList2.Items.Clear();
