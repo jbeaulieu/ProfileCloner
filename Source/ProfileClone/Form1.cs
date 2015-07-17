@@ -1,8 +1,8 @@
 ﻿/*****************************
  * ProfileClone Tool
  * Authored by Jon Beaulieu
- * Version 0.0.1.1
- * Most Recent Edit: 7/16/2015
+ * Version 0.0.1.2
+ * Most Recent Edit: 7/17/2015
  ****************************/
 
 using System;
@@ -138,9 +138,9 @@ namespace ProfileClone
             }
         }
 
-        /// <summary> drive1Refresh()
-        /// Refreshes the list of user profiles available for selection on drive 1.
-        /// This function should be called anytime drive 1 is changed, or the option
+        /// <summary> drive2Refresh()
+        /// Refreshes the list of user profiles available for selection on drive 2.
+        /// This function should be called anytime drive 2 is changed, or the option
         /// to view hidden profiles is enabled/disabled.
         /// </summary>
         public void drive2Refresh()
@@ -186,6 +186,13 @@ namespace ProfileClone
             }
         }
 
+        /// <summary> resetButtonClick()
+        /// Handles the action to take when the reset button is clicked. This method should essentially return
+        /// all settings to their defaults, and clear any selected values. The end result is that the form looks
+        /// exactly the same as when the program first starts up.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void resetButton_Click(object sender, EventArgs e)
         {
             driveBox1.SelectedIndex = 0;
@@ -210,6 +217,16 @@ namespace ProfileClone
             addDirectoryTextBox3.Clear();
         }
 
+        /// <summary> addDirectoryButtons()
+        /// THIS SUMMARY COVERS ALL THREE "addDirectoryButton" EVENT HANDLERS BELOW.
+        /// Handles the addition and selection of an additional directory to back up that is
+        /// not already present on the form. The user should be presented with a folderDialog
+        /// box that allows him/her to choose an additional working directory that they wish
+        /// to duplicate. After selection, that directory should appear in the textBox to the
+        /// left of the button, as confirmation it was selected properly.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void addDirectoryButton1_Click(object sender, EventArgs e)
         {
             string folderPath = "";
@@ -252,6 +269,11 @@ namespace ProfileClone
             addDirectoryTextBox3.Text = folderPath;
         }
 
+        /// <summary> startButtonClick()
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void startButton_Click(object sender, EventArgs e)
         {
             // Get name of profile to be exported
@@ -317,33 +339,9 @@ namespace ProfileClone
 
             }
 
-            //addDirectoryTextBox1.Text = exportDirectory;
-            //addDirectoryTextBox2.Text = sourceList[0];
-            //addDirectoryTextBox3.Text = Path.GetFileName(sourceList[0]);
-
-            //directoryCopy(sourceList[0], importDirectory, true);
-
             //System.IO.File.Copy()
 
-            MessageBox.Show("Done!");
-
-            //directoryCopy(sourceList[0], )
-
-            /*Select C:\ as the default location if no backup drive has been chosen
-            if (driveList.SelectedItem == null)
-            {
-                MessageBox.Show("No destination drive selected -- C:\\ will be selected until changed");
-                driveList.SelectedText = "C:\\";
-            }*/
-
-            //string destPath = driveList.SelectedItem.ToString() + @"backupTest";
-
-            /*foreach (string sourcePath in sourceList)
-            {
-                directoryCopy(sourcePath, destPath, true);
-                progressBar.Increment(100 / sourceList.ToArray().Length);
-                locationBox1.Text = sourcePath;
-            }*/
+            MessageBox.Show("Complete.");
         }
 
         public void directoryCopy(string sourceDirName, string destDirName, bool copySubDirs)

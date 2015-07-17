@@ -13,3 +13,9 @@ C:\Users\1jbeaulieu\Documents\GitHub\ProfileCloner\ProfileClone\ProfileClone\obj
 C:\Users\1jbeaulieu\Documents\GitHub\ProfileCloner\Source\ProfileClone\bin\Debug\ProfileClone.exe.config
 C:\Users\1jbeaulieu\Documents\GitHub\ProfileCloner\Source\ProfileClone\obj\Debug\ProfileClone.exe
 C:\Users\1jbeaulieu\Documents\GitHub\ProfileCloner\Source\ProfileClone\obj\Debug\ProfileClone.pdb
+C:\Users\1jbeaulieu\Documents\GitHub\ProfileCloner\Source\ProfileClone\bin\Debug\ProfileClone.exe
+C:\Users\1jbeaulieu\Documents\GitHub\ProfileCloner\Source\ProfileClone\bin\Debug\ProfileClone.pdb
+C:\Users\1jbeaulieu\Documents\GitHub\ProfileCloner\Source\ProfileClone\obj\Debug\ProfileClone.csprojResolveAssemblyReference.cache
+C:\Users\1jbeaulieu\Documents\GitHub\ProfileCloner\Source\ProfileClone\obj\Debug\ProfileClone.mainForm.resources
+C:\Users\1jbeaulieu\Documents\GitHub\ProfileCloner\Source\ProfileClone\obj\Debug\ProfileClone.Properties.Resources.resources
+C:\Users\1jbeaulieu\Documents\GitHub\ProfileCloner\Source\ProfileClone\obj\Debug\ProfileClone.csproj.GenerateResource.Cache
