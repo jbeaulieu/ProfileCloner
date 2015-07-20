@@ -1,8 +1,8 @@
 ﻿/*****************************
  * ProfileClone Tool
  * Authored by Jon Beaulieu
- * Version 0.0.1.2
- * Most Recent Edit: 7/17/2015
+ * Version 0.1.0
+ * Most Recent Edit: 7/20/2015
  ****************************/
 
 using System;
@@ -331,20 +331,31 @@ namespace ProfileClone
                 sourceList.Add(@addDirectoryTextBox3.Text);
             }
 
+            progressBar.Maximum = sourceList.Count;
+
             foreach(string item in sourceList)
             {
                 string folderName = Path.GetFileName(item);
                 Directory.CreateDirectory(importDirectory + @"\" + folderName);
-                directoryCopy(item, importDirectory + @"\" + folderName, true);
-
+                //directoryCopy(item, importDirectory + @"\" + folderName);
+                DirectoryInfo test1 = new DirectoryInfo(exportDirectory + @"\" + folderName);
+                DirectoryInfo test2 = new DirectoryInfo(importDirectory + @"\" + folderName);
+                CopyFilesRecursively(test1, test2);
+                progressBar.Increment(1);
             }
-
-            //System.IO.File.Copy()
 
             MessageBox.Show("Complete.");
         }
 
-        public void directoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        public static void CopyFilesRecursively(DirectoryInfo source, DirectoryInfo target)
+        {
+            foreach (DirectoryInfo dir in source.GetDirectories())
+                CopyFilesRecursively(dir, target.CreateSubdirectory(dir.Name));
+            foreach (FileInfo file in source.GetFiles())
+                file.CopyTo(Path.Combine(target.FullName, file.Name));
+        }
+        /*
+        public void directoryCopy(string sourceDirName, string destDirName)
         {
             // Get the subdirectories for the specified directory.
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);
@@ -372,13 +383,10 @@ namespace ProfileClone
             }
 
             // If copying subdirectories, copy them and their contents to new location. 
-            if (copySubDirs)
+            foreach (DirectoryInfo subdir in dirs)
             {
-                foreach (DirectoryInfo subdir in dirs)
-                {
-                    string temppath = Path.Combine(destDirName, subdir.Name);
-                    directoryCopy(subdir.FullName, temppath, copySubDirs);
-                }
+                string temppath = Path.Combine(destDirName, subdir.Name);
+                directoryCopy(subdir.FullName, temppath);
             }
         }
 
@@ -402,6 +410,11 @@ namespace ProfileClone
                 //Console.WriteLine("Source path does not exist!");
                 //locationBox3.Text = "Could not find source path!";
             }
+        }*/
+
+        private void outlookCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            MessageBox.Show("Coming in a future release! Please stay tuned");
         }
     }
 }

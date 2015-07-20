@@ -200,6 +200,7 @@
             this.outlookCheckBox.TabIndex = 15;
             this.outlookCheckBox.Text = "Dynamically scan for Outlook pst and nk2 files";
             this.outlookCheckBox.UseVisualStyleBackColor = true;
+            this.outlookCheckBox.CheckedChanged += new System.EventHandler(this.outlookCheckBox_CheckedChanged);
             // 
             // additionalDirectoriesLabel
             // 
@@ -281,6 +282,7 @@
             this.progressBar.Location = new System.Drawing.Point(178, 232);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(445, 23);
+            this.progressBar.Step = 1;
             this.progressBar.TabIndex = 24;
             // 
             // mainForm
