@@ -1,7 +1,7 @@
 ﻿/*****************************
  * ProfileClone Tool
  * Authored by Jon Beaulieu
- * Version 0.1.1
+ * Version 0.1.2
  * Most Recent Edit: 7/20/2015
  ****************************/
 
@@ -150,8 +150,47 @@ namespace ProfileClone
                 }
                 catch (DirectoryNotFoundException)
                 {
-                    MessageBox.Show("Warning: ProfileCloner was unable to detect a Windows directory on the selected volume.",
-                        "Caught DirectoryNotFoundException", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    DialogResult answer = new DialogResult();
+
+                    switch(index)
+                    {
+                        case 1: answer = MessageBox.Show("Warning: ProfileCloner was unable to detect a Windows directory on the selected volume. "
+                            +"Would you like to specify a custom location to read files from?","Caught DirectoryNotFoundException",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            break;
+                        case 2: answer = MessageBox.Show("Warning: ProfileCloner was unable to detect a Windows directory on the selected volume. "
+                            + "Would you like to specify a custom location to write files to?", "Caught DirectoryNotFoundException",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            break;
+                    }
+
+                    if(answer==DialogResult.Yes)
+                    {
+                        FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
+
+                        if (folderBrowser.ShowDialog() == DialogResult.OK)
+                        {
+                            switch(index)
+                            {
+                                default: MessageBox.Show("DOING THE THING!");
+                                    break;
+                            }
+                        }
+                    }
+                    else if(answer==DialogResult.No)
+                    {
+                        switch(index)
+                        {
+                            case 1: driveBox1.SelectedIndex = 0;
+                                driveRefresh(1);
+                                break;
+                            case 2: driveBox2.SelectedIndex = 0;
+                                driveRefresh(2);
+                                break;
+                            default:
+                                break;
+                        }
+                    } 
                 }
             }
         }
