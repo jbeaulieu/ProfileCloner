@@ -1,7 +1,7 @@
 ﻿/*****************************
  * ProfileClone Tool
  * Authored by Jon Beaulieu
- * Version 0.1.0
+ * Version 0.1.1
  * Most Recent Edit: 7/20/2015
  ****************************/
 
@@ -49,18 +49,21 @@ namespace ProfileClone
             driveBox1.SelectedIndex = 0;
             driveBox2.SelectedIndex = 1;
 
-            drive1Refresh();
-            drive2Refresh();
+            driveRefresh(1);
+            driveRefresh(2);
         }
 
+        /// <summary> driveBox_SelectedIndexChanged()
+        /// NOTE: THIS DESCRIPTION APPLIES TO BOTH driveBox1_SelectedIndexChanged() and driveBox2_SelectedIndexChanged()
+        /// Handles the event of changing the selected drive
+        /// </summary>
         private void driveBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            drive1Refresh();
+            driveRefresh(1);
         }
-
         private void driveBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            drive2Refresh();
+            driveRefresh(2);
         }
 
         /// <summary> showHiddenCheckBox_CheckedChanged()
@@ -70,8 +73,8 @@ namespace ProfileClone
         /// </summary>
         private void showHiddenCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            drive1Refresh();
-            drive2Refresh();
+            driveRefresh(1);
+            driveRefresh(2);
         }
 
         /* DEVELOPMENT NOTE: The two below driveRefresh() functions are practically identical,
@@ -79,25 +82,41 @@ namespace ProfileClone
          * argument for which drive to be refresh, and perform the appropriate actions. As there
          * are only two drives to refresh (import and export), using switch cases or if statements
          * for areas where they differ would be acceptable.
-         * SEVERITY: MEDIUM */
+         * SEVERITY: MEDIUM
+         * RESOLVED */
 
         /// <summary> drive1Refresh()
         /// Refreshes the list of user profiles available for selection on drive 1.
         /// This function should be called anytime drive 1 is changed, or the option
         /// to view hidden profiles is enabled/disabled.
         /// </summary>
-        public void drive1Refresh()
+        public void driveRefresh(int index)
         {
-            // Clear the current list of items
-            userList1.Items.Clear();
+            ComboBox selectedDriveBox = new ComboBox();
+            ListBox selectedListBox = new ListBox();
+
+            // Clear the current list of items, and get the selected items based on index
+            switch(index)
+            {
+                case 1:
+                    userList1.Items.Clear();
+                    selectedDriveBox = driveBox1;
+                    selectedListBox = userList1;
+                    break;
+                case 2:
+                    userList2.Items.Clear();
+                    selectedDriveBox = driveBox2;
+                    selectedListBox = userList2;
+                    break;
+            }
 
             // Check if the disk is ready before attempting to read from it
-            if (driveArray[driveBox1.SelectedIndex].IsReady)
+            if (driveArray[selectedDriveBox.SelectedIndex].IsReady)
             {
                 try
                 {
-                    // The parent path is X:\Users\ (where X is the selected drive letter
-                    string path = driveBox1.SelectedItem.ToString() + "Users\\";
+                    // The parent path is X:\Users\ (where X is the selected drive letter)
+                    string path = selectedDriveBox.SelectedItem.ToString() + "Users\\";
 
                     /* DEVELOPMENT NOTE: the foreach statement in this method occurs regardless of the result of the
                      * if statement. Consider restructuring this by moving the showHiddenCheckBox evaluation inside of
@@ -110,7 +129,7 @@ namespace ProfileClone
                         {
                             // Iterate through all subdirectories of the parent path, add them to the profile list
                             string user = userDirectory.Substring(9);
-                            userList1.Items.Add(user);
+                            selectedListBox.Items.Add(user);
                         }
                     }
                     else    // If hidden profiles should not be shown (default)
@@ -120,10 +139,11 @@ namespace ProfileClone
                             string folder = Path.Combine(path, userFolder);
                             DirectoryInfo folderInfo = new DirectoryInfo(folder);
 
+                            // Only copy a file if isn't marked with a "hidden" attribute
                             if ((folderInfo.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
                             {
                                 string user = userFolder.Substring(9);
-                                userList1.Items.Add(user);
+                                selectedListBox.Items.Add(user);
                             }
                         }
                     }
@@ -132,56 +152,6 @@ namespace ProfileClone
                 {
                     MessageBox.Show("Warning: ProfileCloner was unable to detect a Windows directory on the selected volume.",
                         "Caught DirectoryNotFoundException", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    //MessageBox.Show("Would you like to specify a custom directory to read files from?",
-                        //"DirectoryNotFoundException", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                }
-            }
-        }
-
-        /// <summary> drive2Refresh()
-        /// Refreshes the list of user profiles available for selection on drive 2.
-        /// This function should be called anytime drive 2 is changed, or the option
-        /// to view hidden profiles is enabled/disabled.
-        /// </summary>
-        public void drive2Refresh()
-        {
-            userList2.Items.Clear();
-
-            if (driveArray[driveBox2.SelectedIndex].IsReady)
-            {
-                try
-                {
-                    string path = driveBox2.SelectedItem.ToString() + "Users\\";
-
-                    if (showHiddenCheckBox.Checked)
-                    {
-                        foreach (string userDirectory in System.IO.Directory.GetDirectories(path))
-                        {
-                            string user = userDirectory.Substring(9);
-                            userList2.Items.Add(user);
-                        }
-                    }
-                    else
-                    {
-                        foreach (string userFolder in System.IO.Directory.GetDirectories(path))
-                        {
-                            string folder = Path.Combine(path, userFolder);
-                            DirectoryInfo folderInfo = new DirectoryInfo(folder);
-
-                            if ((folderInfo.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
-                            {
-                                string user = userFolder.Substring(9);
-                                userList2.Items.Add(user);
-                            }
-                        }
-                    }
-                }
-                catch(DirectoryNotFoundException e)
-                {
-                    MessageBox.Show("Warning: ProfileCloner was unable to detect a Windows directory on the selected volume.",
-                        "Caught DirectoryNotFoundException", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    //MessageBox.Show("Would you like to specify a custom directory to export the files to?",
-                        //"DirectoryNotFoundException", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                 }
             }
         }
@@ -191,20 +161,23 @@ namespace ProfileClone
         /// all settings to their defaults, and clear any selected values. The end result is that the form looks
         /// exactly the same as when the program first starts up.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void resetButton_Click(object sender, EventArgs e)
         {
+            // Set both drive selection boxes back to their default selections
             driveBox1.SelectedIndex = 0;
             driveBox2.SelectedIndex = 1;
 
-            drive1Refresh();
-            drive2Refresh();
+            // Refresh the drives to show the default drive contents in the userList boxes
+            driveRefresh(1);
+            driveRefresh(2);
 
+            // Return the "show hidden profiles" option to its default (hide)
             showHiddenCheckBox.Checked = false;
 
+            // Clear any selected entries in the libraries listBox
             librariesListBox.ClearSelected();
 
+            // Clear any checked entries in the libraries listBox
             foreach(int index in librariesListBox.CheckedIndices)
             {
                 librariesListBox.SetItemCheckState(index, CheckState.Unchecked);
@@ -212,6 +185,7 @@ namespace ProfileClone
 
             outlookCheckBox.Checked = false;
 
+            // Clear any additional selected directories
             addDirectoryTextBox1.Clear();
             addDirectoryTextBox2.Clear();
             addDirectoryTextBox3.Clear();
@@ -225,8 +199,6 @@ namespace ProfileClone
         /// to duplicate. After selection, that directory should appear in the textBox to the
         /// left of the button, as confirmation it was selected properly.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void addDirectoryButton1_Click(object sender, EventArgs e)
         {
             string folderPath = "";
@@ -240,7 +212,6 @@ namespace ProfileClone
 
             addDirectoryTextBox1.Text = folderPath;
         }
-
         private void addDirectoryButton2_Click(object sender, EventArgs e)
         {
             string folderPath = "";
@@ -254,7 +225,6 @@ namespace ProfileClone
 
             addDirectoryTextBox2.Text = folderPath;
         }
-
         private void addDirectoryButton3_Click(object sender, EventArgs e)
         {
             string folderPath = "";
@@ -270,10 +240,9 @@ namespace ProfileClone
         }
 
         /// <summary> startButtonClick()
-        /// 
+        /// Starts and processes the entire cloning operation. See in-method comments for further details
+        /// on individual operations
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void startButton_Click(object sender, EventArgs e)
         {
             // Get name of profile to be exported
@@ -337,10 +306,9 @@ namespace ProfileClone
             {
                 string folderName = Path.GetFileName(item);
                 Directory.CreateDirectory(importDirectory + @"\" + folderName);
-                //directoryCopy(item, importDirectory + @"\" + folderName);
-                DirectoryInfo test1 = new DirectoryInfo(exportDirectory + @"\" + folderName);
-                DirectoryInfo test2 = new DirectoryInfo(importDirectory + @"\" + folderName);
-                CopyFilesRecursively(test1, test2);
+                DirectoryInfo readDirectory = new DirectoryInfo(exportDirectory + @"\" + folderName);
+                DirectoryInfo writeDirectory = new DirectoryInfo(importDirectory + @"\" + folderName);
+                CopyFilesRecursively(readDirectory, writeDirectory);
                 progressBar.Increment(1);
             }
 
@@ -349,68 +317,11 @@ namespace ProfileClone
 
         public static void CopyFilesRecursively(DirectoryInfo source, DirectoryInfo target)
         {
-            foreach (DirectoryInfo dir in source.GetDirectories())
-                CopyFilesRecursively(dir, target.CreateSubdirectory(dir.Name));
             foreach (FileInfo file in source.GetFiles())
                 file.CopyTo(Path.Combine(target.FullName, file.Name));
+            foreach (DirectoryInfo dir in source.GetDirectories())
+                CopyFilesRecursively(dir, target.CreateSubdirectory(dir.Name));
         }
-        /*
-        public void directoryCopy(string sourceDirName, string destDirName)
-        {
-            // Get the subdirectories for the specified directory.
-            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
-            DirectoryInfo[] dirs = dir.GetDirectories();
-
-            if (!dir.Exists)
-            {
-                throw new DirectoryNotFoundException(
-                    "Source directory does not exist or could not be found: "
-                    + sourceDirName);
-            }
-
-            // If the destination directory doesn't exist, create it. 
-            if (!Directory.Exists(destDirName))
-            {
-                Directory.CreateDirectory(destDirName);
-            }
-
-            // Get the files in the directory and copy them to the new location.
-            FileInfo[] files = dir.GetFiles();
-            foreach (FileInfo file in files)
-            {
-                string temppath = Path.Combine(destDirName, file.Name);
-                file.CopyTo(temppath, false);
-            }
-
-            // If copying subdirectories, copy them and their contents to new location. 
-            foreach (DirectoryInfo subdir in dirs)
-            {
-                string temppath = Path.Combine(destDirName, subdir.Name);
-                directoryCopy(subdir.FullName, temppath);
-            }
-        }
-
-        public void copy(string sourceDirectory, string destinationDirectory)
-        {
-            if (System.IO.Directory.Exists(sourceDirectory))
-            {
-                string[] files = System.IO.Directory.GetFiles(sourceDirectory);
-
-                // Copy the files and overwrite destination files if they already exist.
-                foreach (string s in files)
-                {
-                    // Use static Path methods to extract only the file name from the path.
-                    string fileName = System.IO.Path.GetFileName(s);
-                    string destFile = System.IO.Path.Combine(destinationDirectory, fileName);
-                    System.IO.File.Copy(s, destFile, true);
-                }
-            }
-            else
-            {
-                //Console.WriteLine("Source path does not exist!");
-                //locationBox3.Text = "Could not find source path!";
-            }
-        }*/
 
         private void outlookCheckBox_CheckedChanged(object sender, EventArgs e)
         {
