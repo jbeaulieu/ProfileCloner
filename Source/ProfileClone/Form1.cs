@@ -1,8 +1,8 @@
 ﻿/*****************************
  * ProfileClone Tool
  * Authored by Jon Beaulieu
- * Version 0.1.2
- * Most Recent Edit: 7/20/2015
+ * Version 0.1.3
+ * Most Recent Edit: 7/21/2015
  ****************************/
 
 using System;
@@ -77,14 +77,6 @@ namespace ProfileClone
             driveRefresh(2);
         }
 
-        /* DEVELOPMENT NOTE: The two below driveRefresh() functions are practically identical,
-         * and should be condensed into a single function. Ideal driveRefresh() should take in an
-         * argument for which drive to be refresh, and perform the appropriate actions. As there
-         * are only two drives to refresh (import and export), using switch cases or if statements
-         * for areas where they differ would be acceptable.
-         * SEVERITY: MEDIUM
-         * RESOLVED */
-
         /// <summary> drive1Refresh()
         /// Refreshes the list of user profiles available for selection on drive 1.
         /// This function should be called anytime drive 1 is changed, or the option
@@ -95,20 +87,21 @@ namespace ProfileClone
             ComboBox selectedDriveBox = new ComboBox();
             ListBox selectedListBox = new ListBox();
 
-            // Clear the current list of items, and get the selected items based on index
+            // Get the selected items based on index
             switch(index)
             {
                 case 1:
-                    userList1.Items.Clear();
                     selectedDriveBox = driveBox1;
                     selectedListBox = userList1;
                     break;
                 case 2:
-                    userList2.Items.Clear();
                     selectedDriveBox = driveBox2;
                     selectedListBox = userList2;
                     break;
             }
+            
+            // Empty the current list of items
+            selectedListBox.Items.Clear();
 
             // Check if the disk is ready before attempting to read from it
             if (driveArray[selectedDriveBox.SelectedIndex].IsReady)
@@ -116,7 +109,7 @@ namespace ProfileClone
                 try
                 {
                     // The parent path is X:\Users\ (where X is the selected drive letter)
-                    string path = selectedDriveBox.SelectedItem.ToString() + "Users\\";
+                    string path = selectedDriveBox.SelectedItem.ToString() + @"Users\";
 
                     /* DEVELOPMENT NOTE: the foreach statement in this method occurs regardless of the result of the
                      * if statement. Consider restructuring this by moving the showHiddenCheckBox evaluation inside of
@@ -192,6 +185,11 @@ namespace ProfileClone
                         }
                     } 
                 }
+            }
+            else
+            {
+                MessageBox.Show("Whoops! Looks like the drive you selected isn't ready. If you selected an optical drive, please make sure that "
+                    +"a disc is inserted. Otherwise, check that you can view the drive's contents in Windows Explorer.")
             }
         }
 
@@ -354,11 +352,15 @@ namespace ProfileClone
             MessageBox.Show("Complete.");
         }
 
+        /// <summary> CopyFilesRecursively()
+        /// Performs the actual copying of files inside a folder.
+        /// Calls itself recursively to copy subdirectories.
+        /// </summary>
         public static void CopyFilesRecursively(DirectoryInfo source, DirectoryInfo target)
         {
-            foreach (FileInfo file in source.GetFiles())
+            foreach (FileInfo file in source.GetFiles())    // Copy each file in the source directory over to the target directory
                 file.CopyTo(Path.Combine(target.FullName, file.Name));
-            foreach (DirectoryInfo dir in source.GetDirectories())
+            foreach (DirectoryInfo dir in source.GetDirectories())      // Perform the same copy operation on each subdirectory of the source
                 CopyFilesRecursively(dir, target.CreateSubdirectory(dir.Name));
         }
 
