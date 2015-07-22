@@ -1,8 +1,8 @@
 ﻿/*****************************
  * ProfileClone Tool
  * Authored by Jon Beaulieu
- * Version 0.1.3
- * Most Recent Edit: 7/21/2015
+ * Version 0.1.4
+ * Most Recent Edit: 7/22/2015
  ****************************/
 
 using System;
@@ -174,15 +174,15 @@ namespace ProfileClone
                     {
                         switch(index)
                         {
-                            case 1: driveBox1.SelectedIndex = 0;
-                                driveRefresh(1);
+                            case 1: driveRefresh(1);
                                 break;
-                            case 2: driveBox2.SelectedIndex = 0;
-                                driveRefresh(2);
+                            case 2: driveRefresh(2);
                                 break;
                             default:
                                 break;
                         }
+
+                        selectedDriveBox.SelectedIndex = 0;
                     } 
                 }
             }
