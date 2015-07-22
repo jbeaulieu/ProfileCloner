@@ -47,7 +47,7 @@ namespace ProfileClone
             }
             
             driveBox1.SelectedIndex = 0;
-            driveBox2.SelectedIndex = 1;
+            driveBox2.SelectedIndex = 0;
 
             driveRefresh(1);
             driveRefresh(2);
@@ -189,7 +189,7 @@ namespace ProfileClone
             else
             {
                 MessageBox.Show("Whoops! Looks like the drive you selected isn't ready. If you selected an optical drive, please make sure that "
-                    +"a disc is inserted. Otherwise, check that you can view the drive's contents in Windows Explorer.")
+                    + "a disc is inserted. Otherwise, check that you can view the drive's contents in Windows Explorer.");
             }
         }
 
@@ -202,7 +202,7 @@ namespace ProfileClone
         {
             // Set both drive selection boxes back to their default selections
             driveBox1.SelectedIndex = 0;
-            driveBox2.SelectedIndex = 1;
+            driveBox2.SelectedIndex = 0;
 
             // Refresh the drives to show the default drive contents in the userList boxes
             driveRefresh(1);
